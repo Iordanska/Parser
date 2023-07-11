@@ -11,6 +11,8 @@ kafka-python = "*"
 requests = "*"
 python-dotenv = "*"
 pydantic = {extras = ["dotenv"], version = "*"}
+user-agent = "*"
+pydantic-settings = "*"
 
 [dev-packages]
 black = "*"

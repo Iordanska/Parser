@@ -1,9 +1,9 @@
 from fastapi import Depends
 from pymongo.collection import Collection
 
-from category.model import categories_serializer, category_serializer
-from category.schema import Category
 from config.db import get_category_collection
+from schemas.category import Category
+from serializers.category import categories_serializer, category_serializer
 
 
 class CategoryDAO:

@@ -19,3 +19,8 @@ def get_product_collection() -> Collection:
 def get_category_collection() -> Collection:
     collection = get_database()[settings.DB_CATEGORY_COLLECTION]
     return collection
+
+
+# def get_game_category_collection() -> Collection:
+#     collection = get_database()[settings.DB_GAME_CATEGORY_COLLECTION]
+#     return collection

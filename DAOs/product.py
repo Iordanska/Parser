@@ -2,8 +2,8 @@ from fastapi import Depends
 from pymongo.collection import Collection
 
 from config.db import get_product_collection
-from product.model import products_serializer
-from product.schema import Product
+from schemas.product import Product
+from serializers.product import products_serializer
 
 
 class ProductDAO:

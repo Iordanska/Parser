@@ -17,7 +17,7 @@ async def request_validation_exception_handler(
 ) -> JSONResponse:
     query_params = request.query_params._dict
     detail = {"errors": exc.errors(), "query_params": query_params}
-    logger.info(detail)
+    logger.error(detail)
     return await _request_validation_exception_handler(request, exc)
 
 

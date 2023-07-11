@@ -6,7 +6,7 @@ from pydantic import BaseModel, Field
 
 class Product(BaseModel):
     name: str
-    categories: List[str]
+    categories: List[int]
     brand: str
     brand_id: int
     sku: str
