@@ -8,7 +8,7 @@ from serializers.category import categories_serializer, category_serializer
 
 class CategoryDAO:
     def __init__(self, collection: Collection):
-        self.collection = get_category_collection()
+        self.collection = collection
 
     def get_categories(self):
         categories = categories_serializer(self.collection.find())
@@ -21,8 +21,8 @@ class CategoryDAO:
         return category
 
     def create_category(self, category: Category):
-        product = self.collection.insert_one(category)
-        category_id = str(product.inserted_id)
+        category = self.collection.insert_one(category)
+        category_id = str(category.inserted_id)
         return category_id
 
 

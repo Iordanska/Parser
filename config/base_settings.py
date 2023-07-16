@@ -10,9 +10,12 @@ class Settings(BaseSettings):
     DB_NAME: str
     DB_PRODUCT_COLLECTION: str
     DB_CATEGORY_COLLECTION: str
+    DB_STREAM_COLLECTION: str
     KAFKA_HOST: str
     KAFKA_PORT: str
     KAFKA_TOPIC: str
+    AUTH_TOKEN: str
+    CLIENT_ID: str
 
     class Config:
         env_file = f"{os.path.dirname(os.path.abspath(__file__))}/../.env"
