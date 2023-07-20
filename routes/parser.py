@@ -18,15 +18,15 @@ async def get_streams(
 ):
     try:
         data = parse_streams(game_id, user_login)
-    except HTTPException:
-        raise HTTPException(status_code=400, detail="Bad Request")
-    except:
-        raise HTTPException(status_code=500, detail="Parser error")
+    except HTTPException as e:
+        raise HTTPException(status_code=e.status_code, detail=e.detail)
+    except Exception:
+        raise HTTPException(status_code=400, detail="Twitch parser error")
 
     try:
         produce(producer, data)
     except:
-        raise HTTPException(status_code=500, detail="Producer error")
+        raise HTTPException(status_code=400, detail="Producer error")
 
     return {"success": "streams have been parsed"}
 
@@ -38,12 +38,12 @@ async def get_categories(producer: KafkaProducer = Depends(get_producer)):
     try:
         data = parse_categories()
     except:
-        raise HTTPException(status_code=500, detail="Parser error")
+        raise HTTPException(status_code=400, detail="Lamoda parser error")
 
     try:
         produce(producer, data)
     except:
-        raise HTTPException(status_code=500, detail="Producer error")
+        raise HTTPException(status_code=400, detail="Producer error")
 
     return {"success": "categories have been parsed"}
 
@@ -63,11 +63,11 @@ async def parse_products(
     try:
         data = parse_category(category["link"])
     except:
-        raise HTTPException(status_code=500, detail="Parser error")
+        raise HTTPException(status_code=400, detail="Lamoda parser error")
 
     try:
         produce(producer, data)
     except:
-        raise HTTPException(status_code=500, detail="Producer error")
+        raise HTTPException(status_code=400, detail="Producer error")
 
     return {"success": f"category {category['name']} has been parsed"}
