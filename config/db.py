@@ -21,6 +21,6 @@ def get_category_collection() -> Collection:
     return collection
 
 
-# def get_game_category_collection() -> Collection:
-#     collection = get_database()[settings.DB_GAME_CATEGORY_COLLECTION]
-#     return collection
+def get_stream_collection() -> Collection:
+    collection = get_database()[settings.DB_STREAM_COLLECTION]
+    return collection

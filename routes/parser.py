@@ -2,14 +2,33 @@ from fastapi import APIRouter, HTTPException
 from fastapi.params import Depends
 from kafka import KafkaProducer
 
-from config.db import get_category_collection, get_product_collection
-from consumer import consume
 from DAOs.category import CategoryDAO, get_category_dao
-from DAOs.product import ProductDAO
 from func.lamoda_parser import parse_categories, parse_category
+from func.twitch_parser import parse_streams
 from producer import get_producer, produce
 
 router = APIRouter()
+
+
+@router.get("/get_streams", response_description="Parse streams", tags=["parser"])
+async def get_streams(
+    game_id: str | None = None,
+    user_login: str | None = None,
+    producer: KafkaProducer = Depends(get_producer),
+):
+    try:
+        data = parse_streams(game_id, user_login)
+    except HTTPException as e:
+        raise HTTPException(status_code=e.status_code, detail=e.detail)
+    except Exception:
+        raise HTTPException(status_code=400, detail="Twitch parser error")
+
+    try:
+        produce(producer, data)
+    except:
+        raise HTTPException(status_code=400, detail="Producer error")
+
+    return {"success": "streams have been parsed"}
 
 
 @router.get(
@@ -19,12 +38,12 @@ async def get_categories(producer: KafkaProducer = Depends(get_producer)):
     try:
         data = parse_categories()
     except:
-        raise HTTPException(status_code=500, detail="Parser error")
+        raise HTTPException(status_code=400, detail="Lamoda parser error")
 
     try:
         produce(producer, data)
     except:
-        raise HTTPException(status_code=500, detail="Producer error")
+        raise HTTPException(status_code=400, detail="Producer error")
 
     return {"success": "categories have been parsed"}
 
@@ -44,11 +63,11 @@ async def parse_products(
     try:
         data = parse_category(category["link"])
     except:
-        raise HTTPException(status_code=500, detail="Parser error")
+        raise HTTPException(status_code=400, detail="Lamoda parser error")
 
     try:
         produce(producer, data)
     except:
-        raise HTTPException(status_code=500, detail="Producer error")
+        raise HTTPException(status_code=400, detail="Producer error")
 
     return {"success": f"category {category['name']} has been parsed"}

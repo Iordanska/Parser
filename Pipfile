@@ -13,6 +13,7 @@ python-dotenv = "*"
 pydantic = {extras = ["dotenv"], version = "*"}
 user-agent = "*"
 pydantic-settings = "*"
+requests-html = "*"
 
 [dev-packages]
 black = "*"
